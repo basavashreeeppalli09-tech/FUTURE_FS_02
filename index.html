@@ -1,12 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Client Lead Management System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Lead Management System</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    margin: 0;
+    color: #1e293b;
+}
+
+header {
+    background: #1d4ed8;
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+}
+
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 18px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+    padding: 18px 8px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+.card h2 {
+    color: #2563eb;
+    margin: 5px;
+    font-size: 25px;
+}
+
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px #00000010;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 </head>
+
 <body>
-    <h1>Client Lead Management System</h1>
-    <p>Manage your clients and potential customers in one place.</p>
+
+<header>
+    <h1>Client Lead Manager</h1>
+    <p>Manage your customers in one place</p>
+</header>
+
+<main>
+
+    <div class="cards">
+        <div class="card">
+            <p>Total Leads</p>
+            <h2 id="total">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Contacted</p>
+            <h2 id="contacted">0</h2>
+        </div>
+
+        <div class="card">
+            <p>Converted</p>
+            <h2 id="converted">0</h2>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h2>Add New Client</h2>
+
+        <form id="leadForm">
+            <input id="name" type="text"
+                placeholder="Client Name" required>
+
+            <input id="phone" type="tel"
+                placeholder="Phone Number" required>
+
+            <input id="email" type="email"
+                placeholder="Email Address">
+
+            <input id="interest" type="text"
+                placeholder="Product or Service Interested In" required>
+
+            <button type="submit">Add Client</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <h2>Client List</h2>
+        <p>Your client records will appear here in the next step.</p>
+    </div>
+
+</main>
+
 </body>
 </html>
