@@ -22,7 +22,7 @@ A simple and responsive web application to manage client leads, track communicat
 
 🚀 Live Demo
 
-"Click here to view the project" (PASTE_YOUR_GITHUB_PAGES_LINK_HERE)
+"Click here to view the project" [(PASTE_YOUR_GITHUB_PAGES_LINK_HERE)](https://github.com/basavashreeeppalli09-tech/FUTURE_FS_02)
 
 📂 Project Structure
 
