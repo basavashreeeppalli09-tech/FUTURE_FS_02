@@ -3,66 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Lead Management System</title>
+<title>Client Lead Manager</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     font-family: Arial, sans-serif;
     background: #f1f5f9;
-    margin: 0;
     color: #1e293b;
+    margin: 0;
 }
 
 header {
     background: #1d4ed8;
     color: white;
-    padding: 25px 15px;
     text-align: center;
+    padding: 22px 12px;
 }
 
 main {
-    max-width: 900px;
+    max-width: 950px;
     margin: auto;
-    padding: 18px;
+    padding: 15px;
 }
 
 .cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 18px;
 }
 
-.card {
+.card, .panel {
     background: white;
-    padding: 18px 8px;
+    padding: 16px;
     border-radius: 10px;
-    text-align: center;
     box-shadow: 0 2px 8px #00000010;
 }
+
+.card { text-align: center; }
 
 .card h2 {
     color: #2563eb;
     margin: 5px;
-    font-size: 25px;
-}
-
-.panel {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px #00000010;
 }
 
 input, select, button {
     width: 100%;
     padding: 12px;
-    margin: 7px 0;
+    margin: 6px 0;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     font-size: 15px;
@@ -72,38 +62,49 @@ button {
     background: #2563eb;
     color: white;
     border: none;
-    font-weight: bold;
     cursor: pointer;
+    font-weight: bold;
 }
 
-@media (max-width: 480px) {
-    .cards {
-        grid-template-columns: 1fr;
-    }
+.delete { background: #dc2626; }
+.status { background: #0f766e; }
+
+#search { margin-top: 18px; }
+
+.lead {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 12px;
+    overflow-wrap: anywhere;
+}
+
+.lead p { margin: 7px 0; }
+
+.small { font-size: 13px; color: #64748b; }
+
+@media (max-width: 500px) {
+    .cards { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 
 <body>
-
 <header>
     <h1>Client Lead Manager</h1>
     <p>Manage your customers in one place</p>
 </header>
 
 <main>
-
     <div class="cards">
         <div class="card">
             <p>Total Leads</p>
             <h2 id="total">0</h2>
         </div>
-
         <div class="card">
             <p>Contacted</p>
             <h2 id="contacted">0</h2>
         </div>
-
         <div class="card">
             <p>Converted</p>
             <h2 id="converted">0</h2>
@@ -112,30 +113,144 @@ button {
 
     <div class="panel">
         <h2>Add New Client</h2>
-
         <form id="leadForm">
-            <input id="name" type="text"
-                placeholder="Client Name" required>
-
+            <input id="name" placeholder="Client Name" required>
             <input id="phone" type="tel"
                 placeholder="Phone Number" required>
-
             <input id="email" type="email"
-                placeholder="Email Address">
-
-            <input id="interest" type="text"
+                placeholder="Email Address (optional)">
+            <input id="interest"
                 placeholder="Product or Service Interested In" required>
-
             <button type="submit">Add Client</button>
         </form>
     </div>
 
-    <div class="panel">
+    <div class="panel" style="margin-top:18px">
         <h2>Client List</h2>
-        <p>Your client records will appear here in the next step.</p>
+        <input id="search" placeholder="Search clients..."
+            oninput="renderLeads()">
+        <div id="leadList"></div>
     </div>
-
 </main>
 
+<script>
+let leads = [];
+
+try {
+    leads = JSON.parse(localStorage.getItem("clientLeads")) || [];
+} catch (error) {
+    leads = [];
+}
+
+document.getElementById("leadForm").addEventListener("submit",
+function(event) {
+    event.preventDefault();
+
+    const lead = {
+        id: Date.now(),
+        name: document.getElementById("name").value.trim(),
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        interest: document.getElementById("interest").value.trim(),
+        status: "New"
+    };
+
+    leads.push(lead);
+    saveLeads();
+    this.reset();
+    renderLeads();
+});
+
+function saveLeads() {
+    try {
+        localStorage.setItem("clientLeads", JSON.stringify(leads));
+    } catch (error) {
+        alert("Could not save data in this browser.");
+    }
+}
+
+function updateStatus(id, status) {
+    leads = leads.map(lead =>
+        lead.id === id ? {...lead, status: status} : lead
+    );
+    saveLeads();
+    renderLeads();
+}
+
+function deleteLead(id) {
+    if (confirm("Delete this client?")) {
+        leads = leads.filter(lead => lead.id !== id);
+        saveLeads();
+        renderLeads();
+    }
+}
+
+function renderLeads() {
+    const search = document.getElementById("search")
+        .value.toLowerCase();
+
+    const filtered = leads.filter(lead =>
+        [lead.name, lead.phone, lead.email, lead.interest]
+        .some(value => value.toLowerCase().includes(search))
+    );
+
+    document.getElementById("total").textContent = leads.length;
+    document.getElementById("contacted").textContent =
+        leads.filter(lead => lead.status === "Contacted").length;
+    document.getElementById("converted").textContent =
+        leads.filter(lead => lead.status === "Converted").length;
+
+    const list = document.getElementById("leadList");
+    list.replaceChildren();
+
+    if (filtered.length === 0) {
+        list.textContent = "No clients found. Add your first client above.";
+        return;
+    }
+
+    filtered.forEach(lead => {
+        const card = document.createElement("div");
+        card.className = "lead";
+
+        const title = document.createElement("h3");
+        title.textContent = lead.name;
+        card.appendChild(title);
+
+        [ "Phone: " + lead.phone,
+          "Email: " + (lead.email || "Not provided"),
+          "Interested in: " + lead.interest,
+          "Status: " + lead.status
+        ].forEach(text => {
+            const p = document.createElement("p");
+            p.textContent = text;
+            card.appendChild(p);
+        });
+
+        const status = document.createElement("select");
+        ["New", "Contacted", "Converted"].forEach(value => {
+            const option = document.createElement("option");
+            option.value = value;
+            option.textContent = value;
+            status.appendChild(option);
+        });
+        status.value = lead.status;
+        status.setAttribute("aria-label", "Status for " + lead.name);
+        status.addEventListener("change", () =>
+            updateStatus(lead.id, status.value)
+        );
+        card.appendChild(status);
+
+        const del = document.createElement("button");
+        del.textContent = "Delete Client";
+        del.className = "delete";
+        del.addEventListener("click", () => deleteLead(lead.id));
+        card.appendChild(del);
+
+        list.appendChild(card);
+    });
+}
+
+renderLeads();
+</script>
 </body>
 </html>
