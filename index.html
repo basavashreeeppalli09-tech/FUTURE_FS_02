@@ -3,526 +3,708 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Client Lead Manager</title>
+<title>Client Lead Management</title>
 
 <style>
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #f0f4f8;
-    color: #1e293b;
-    margin: 0;
-    line-height: 1.6;
+  font-family: Arial, sans-serif;
+  background: #f3f7ff;
+  color: #142b4e;
 }
 
-header {
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-    color: white;
-    padding: 30px 20px;
-    box-shadow: 0 4px 12px #1e3a8a20;
+.layout {
+  display: flex;
+  min-height: 100vh;
 }
 
-.header-content {
-    max-width: 1000px;
-    margin: auto;
+.sidebar {
+  width: 235px;
+  background: linear-gradient(180deg, #10264c, #081a36);
+  color: white;
+  padding: 25px 15px;
+  flex-shrink: 0;
 }
 
-header h1 {
-    margin: 0 0 6px;
-    font-size: 28px;
+.brand {
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1.5;
+  margin: 0 8px 35px;
 }
 
-header p {
-    margin: 0;
-    color: #dbeafe;
+.brand span {
+  display: block;
+  color: #a9c9ff;
+  font-size: 13px;
+  font-weight: normal;
 }
 
-main {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+.nav {
+  display: block;
+  padding: 15px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.cards {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 15px;
-    margin-bottom: 22px;
+.nav:hover, .nav.active {
+  background: #2161f5;
 }
 
-.card {
-    background: white;
-    padding: 20px 12px;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 0 4px 14px #0f172a0c;
-    border: 1px solid #e2e8f0;
+.main {
+  flex: 1;
+  min-width: 0;
 }
 
-.card .icon {
-    font-size: 25px;
+.topbar {
+  background: linear-gradient(110deg, #2362f5, #72c2ff);
+  color: white;
+  padding: 25px 30px;
 }
 
-.card p {
-    color: #64748b;
-    margin: 5px 0;
-    font-size: 14px;
+.topbar h1 {
+  font-size: 27px;
+  margin-bottom: 8px;
 }
 
-.card h2 {
-    color: #2563eb;
-    margin: 4px 0 0;
-    font-size: 30px;
+.topbar p {
+  opacity: .95;
+}
+
+.content {
+  padding: 24px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  background: white;
+  padding: 22px;
+  border: 1px solid #dce8ff;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px #1c4c8910;
+}
+
+.stat .emoji {
+  font-size: 25px;
+  margin-bottom: 12px;
+}
+
+.stat h3 {
+  font-size: 15px;
+  color: #567094;
+}
+
+.stat h2 {
+  font-size: 32px;
+  margin: 8px 0;
+}
+
+.blue { border-top: 4px solid #3578ff; }
+.orange { border-top: 4px solid #ffb43e; }
+.green { border-top: 4px solid #22c58b; }
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.8fr);
+  gap: 20px;
+  align-items: start;
 }
 
 .panel {
-    background: white;
-    padding: 22px;
-    border-radius: 14px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 14px #0f172a0c;
-    border: 1px solid #e2e8f0;
+  background: white;
+  padding: 22px;
+  border: 1px solid #e1eaff;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px #1c4c890a;
 }
 
 .panel h2 {
-    margin-top: 0;
-    color: #1e3a8a;
+  font-size: 20px;
+  margin-bottom: 8px;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.subtitle {
+  color: #7286a5;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 22px;
 }
 
-input, select, button {
-    width: 100%;
-    padding: 13px;
-    margin: 6px 0;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 15px;
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 16px 0 8px;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #d6e2f6;
+  border-radius: 9px;
+  font-size: 14px;
+  background: white;
+  color: #173052;
+  outline: none;
 }
 
 input:focus, select:focus {
-    outline: 2px solid #93c5fd;
-    border-color: #2563eb;
+  border-color: #3578ff;
+  box-shadow: 0 0 0 3px #3578ff18;
 }
 
 button {
-    background: #2563eb;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 9px;
+  font-weight: bold;
+  padding: 11px 14px;
+  font-size: 13px;
 }
 
-button:hover {
-    background: #1d4ed8;
+.primary {
+  background: linear-gradient(110deg, #2161f5, #3989ff);
+  color: white;
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 15px;
 }
 
-.primary-button {
-    margin-top: 12px;
+.primary:hover, .edit:hover {
+  opacity: .88;
 }
 
-.search-box {
-    margin-bottom: 12px;
+.right-column {
+  min-width: 0;
+}
+
+.search-panel {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-panel input {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-panel select {
+  width: 135px;
+}
+
+.list-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.count {
+  background: #edf4ff;
+  color: #2161d8;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .lead {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-left: 4px solid #3b82f6;
-    border-radius: 10px;
-    padding: 16px;
-    margin-top: 14px;
-    overflow-wrap: anywhere;
+  border: 1px solid #e5edfa;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
 }
 
-.lead h3 {
-    margin: 0 0 10px;
-    color: #1e40af;
+.lead-info {
+  min-width: 0;
 }
 
-.lead p {
-    margin: 7px 0;
+.lead-info h3 {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+  margin-bottom: 7px;
 }
 
-.status-badge {
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.status-contacted {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.status-converted {
-    background: #dcfce7;
-    color: #166534;
+.detail {
+  font-size: 12px;
+  color: #6b80a0;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
 }
 
 .lead-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 
-.delete-button {
-    background: #dc2626;
+.edit {
+  background: #2161f5;
+  color: white;
 }
 
-.delete-button:hover {
-    background: #b91c1c;
+.delete {
+  background: #ff4a55;
+  color: white;
 }
 
-.empty-message {
-    text-align: center;
-    padding: 25px 10px;
-    color: #64748b;
+.status {
+  display: inline-block;
+  font-size: 11px;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.New {
+  background: #e1edff;
+  color: #1659d8;
+}
+
+.Contacted {
+  background: #fff0c8;
+  color: #a85b00;
+}
+
+.Converted {
+  background: #d5fae8;
+  color: #087c50;
+}
+
+.empty {
+  text-align: center;
+  color: #788ba6;
+  padding: 35px 10px;
 }
 
 footer {
-    text-align: center;
-    padding: 20px;
-    color: #64748b;
+  text-align: center;
+  padding: 20px 10px;
+  color: #7185a2;
+  font-size: 12px;
 }
 
-@media (max-width: 600px) {
-    header {
-        padding: 24px 16px;
-    }
+@media (max-width: 1000px) {
+  .sidebar {
+    width: 180px;
+  }
 
-    header h1 {
-        font-size: 23px;
-    }
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
 
-    main {
-        padding: 12px;
-    }
+@media (max-width: 650px) {
+  .layout {
+    display: block;
+  }
 
-    .cards {
-        gap: 8px;
-    }
+  .sidebar {
+    width: 100%;
+    padding: 12px;
+  }
 
-    .card {
-        padding: 12px 4px;
-    }
+  .brand {
+    margin: 0 5px 10px;
+    font-size: 19px;
+  }
 
-    .card .icon {
-        font-size: 21px;
-    }
+  .brand span {
+    display: inline;
+    margin-left: 5px;
+  }
 
-    .card h2 {
-        font-size: 24px;
-    }
+  .nav {
+    display: inline-block;
+    padding: 10px;
+    margin: 2px;
+    font-size: 12px;
+  }
 
-    .card p {
-        font-size: 12px;
-    }
+  .topbar {
+    padding: 22px 18px;
+  }
 
-    .panel {
-        padding: 16px;
-    }
+  .topbar h1 {
+    font-size: 23px;
+  }
 
-    .form-grid {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
+  .content {
+    padding: 13px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat {
+    padding: 16px;
+  }
+
+  .stat h2 {
+    font-size: 27px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .search-panel {
+    flex-direction: column;
+  }
+
+  .search-panel select {
+    width: 100%;
+  }
+
+  .lead {
+    grid-template-columns: 1fr;
+  }
+
+  .lead-actions {
+    flex-wrap: wrap;
+  }
 }
 </style>
 </head>
 
 <body>
+<div class="layout">
 
-<header>
-    <div class="header-content">
-        <h1>📊 Client Lead Manager</h1>
-        <p>Manage clients, track leads, and grow your business.</p>
-    </div>
-</header>
-
-<main>
-
-    <div class="cards">
-        <div class="card">
-            <div class="icon">👥</div>
-            <p>Total Leads</p>
-            <h2 id="total">0</h2>
-        </div>
-
-        <div class="card">
-            <div class="icon">📞</div>
-            <p>Contacted</p>
-            <h2 id="contacted">0</h2>
-        </div>
-
-        <div class="card">
-            <div class="icon">✅</div>
-            <p>Converted</p>
-            <h2 id="converted">0</h2>
-        </div>
+  <aside class="sidebar">
+    <div class="brand">
+      👥 Client Lead
+      <span>Management System</span>
     </div>
 
-    <section class="panel">
-        <h2>➕ Add New Client</h2>
+    <a class="nav active" href="#dashboard">🏠 Dashboard</a>
+    <a class="nav" href="#add-client">➕ Add Client</a>
+    <a class="nav" href="#client-list">👥 Client List</a>
+    <a class="nav" href="#reports">📊 Reports</a>
+  </aside>
 
-        <form id="leadForm">
-            <div class="form-grid">
-                <input
-                    id="name"
-                    type="text"
-                    placeholder="Client Name *"
-                    required
-                >
+  <main class="main" id="dashboard">
+    <header class="topbar">
+      <h1>Welcome Back! 👋</h1>
+      <p>Manage your clients, track leads and grow your business.</p>
+    </header>
 
-                <input
-                    id="phone"
-                    type="tel"
-                    placeholder="Phone Number *"
-                    required
-                >
+    <div class="content">
 
-                <input
-                    id="email"
-                    type="email"
-                    placeholder="Email Address (optional)"
-                >
+      <section class="stats">
+        <div class="stat blue">
+          <div class="emoji">👥</div>
+          <h3>Total Leads</h3>
+          <h2 id="total">0</h2>
+          <p class="detail">All clients in your system</p>
+        </div>
 
-                <input
-                    id="interest"
-                    type="text"
-                    placeholder="Product or Service *"
-                    required
-                >
+        <div class="stat orange">
+          <div class="emoji">📞</div>
+          <h3>Contacted</h3>
+          <h2 id="contacted">0</h2>
+          <p class="detail">Reached out to clients</p>
+        </div>
+
+        <div class="stat green">
+          <div class="emoji">✅</div>
+          <h3>Converted</h3>
+          <h2 id="converted">0</h2>
+          <p class="detail">Successfully closed</p>
+        </div>
+      </section>
+
+      <section class="workspace">
+
+        <div class="panel" id="add-client">
+          <h2>👤 Add New Client</h2>
+          <p class="subtitle">Fill in the details below to add a new client.</p>
+
+          <form id="clientForm">
+            <input type="hidden" id="editId">
+
+            <label for="name">Client Name *</label>
+            <input id="name" placeholder="Enter client name" required>
+
+            <label for="phone">Phone Number *</label>
+            <input id="phone" type="tel" placeholder="Enter phone number" required>
+
+            <label for="email">Email Address</label>
+            <input id="email" type="email" placeholder="Enter email address">
+
+            <label for="interest">Interested In *</label>
+            <select id="interest" required>
+              <option value="">Select product or service</option>
+              <option>Website Development</option>
+              <option>Mobile App Development</option>
+              <option>Digital Marketing</option>
+              <option>Graphic Design</option>
+              <option>SEO Services</option>
+              <option>Other</option>
+            </select>
+
+            <label for="status">Lead Status</label>
+            <select id="status">
+              <option>New</option>
+              <option>Contacted</option>
+              <option>Converted</option>
+            </select>
+
+            <button class="primary" type="submit" id="submitBtn">
+              ＋ Add Client
+            </button>
+          </form>
+        </div>
+
+        <div class="right-column" id="client-list">
+          <div class="panel search-panel">
+            <input id="search" placeholder="🔍 Search name, phone, email or interest...">
+            <select id="filter">
+              <option value="">All Status</option>
+              <option>New</option>
+              <option>Contacted</option>
+              <option>Converted</option>
+            </select>
+          </div>
+
+          <div class="panel">
+            <div class="list-heading">
+              <div>
+                <h2>👥 Client List</h2>
+                <p class="subtitle" style="margin:6px 0 0">
+                  View and manage your clients below.
+                </p>
+              </div>
+              <span class="count" id="count">0 clients</span>
             </div>
 
-            <button class="primary-button" type="submit">
-                + Add Client
-            </button>
-        </form>
-    </section>
+            <div id="leads"></div>
+          </div>
+        </div>
 
-    <section class="panel">
-        <h2>👤 Client List</h2>
+      </section>
+    </div>
 
-        <input
-            class="search-box"
-            id="search"
-            type="search"
-            placeholder="🔍 Search by name, phone, email..."
-        >
-
-        <div id="leadList"></div>
-    </section>
-
-</main>
-
-<footer>
-    <p>Client Lead Management System</p>
-    <p>Built with HTML, CSS and JavaScript ❤️</p>
-</footer>
+    <footer>
+      Client Lead Management System · Built with HTML, CSS & JavaScript
+    </footer>
+  </main>
+</div>
 
 <script>
 let leads = [];
+let nextId = 1;
 
 try {
-    const savedLeads = localStorage.getItem("clientLeads");
-    leads = savedLeads ? JSON.parse(savedLeads) : [];
-
-    if (!Array.isArray(leads)) {
-        leads = [];
-    }
+  const saved = JSON.parse(localStorage.getItem("clientLeads") || "[]");
+  if (Array.isArray(saved)) {
+    leads = saved.filter(item =>
+      item && typeof item === "object" &&
+      item.name && item.phone
+    );
+    leads.forEach(item => {
+      if (!item.id) item.id = nextId;
+      nextId = Math.max(nextId, Number(item.id) + 1 || nextId);
+      if (!item.status) item.status = "New";
+    });
+  }
 } catch (error) {
-    leads = [];
+  leads = [];
 }
 
-const form = document.getElementById("leadForm");
-const searchInput = document.getElementById("search");
-
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const lead = {
-        id: Date.now(),
-        name: document.getElementById("name").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        interest: document.getElementById("interest").value.trim(),
-        status: "New"
-    };
-
-    if (!lead.name || !lead.phone || !lead.interest) {
-        alert("Please fill in all required fields.");
-        return;
-    }
-
-    leads.push(lead);
-    saveLeads();
-
-    form.reset();
-    renderLeads();
-
-    alert("Client added successfully!");
-});
+const form = document.getElementById("clientForm");
 
 function saveLeads() {
-    try {
-        localStorage.setItem("clientLeads", JSON.stringify(leads));
-    } catch (error) {
-        alert("Your browser could not save the data.");
-    }
+  localStorage.setItem("clientLeads", JSON.stringify(leads));
+  renderLeads();
 }
 
-function updateStatus(id, newStatus) {
-    leads = leads.map(function(lead) {
-        if (lead.id === id) {
-            return { ...lead, status: newStatus };
-        }
-        return lead;
-    });
+form.addEventListener("submit", function(event) {
+  event.preventDefault();
 
-    saveLeads();
-    renderLeads();
+  const editId = document.getElementById("editId").value;
+  const client = {
+    name: document.getElementById("name").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    interest: document.getElementById("interest").value,
+    status: document.getElementById("status").value
+  };
+
+  if (!client.name || !client.phone || !client.interest) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  if (editId) {
+    const index = leads.findIndex(item => item.id === Number(editId));
+    if (index !== -1) {
+      leads[index] = { ...leads[index], ...client };
+    }
+  } else {
+    leads.unshift({ id: nextId++, ...client });
+  }
+
+  saveLeads();
+  form.reset();
+  document.getElementById("editId").value = "";
+  document.getElementById("submitBtn").textContent = "＋ Add Client";
+});
+
+function editLead(id) {
+  const lead = leads.find(item => item.id === id);
+  if (!lead) return;
+
+  document.getElementById("editId").value = lead.id;
+  document.getElementById("name").value = lead.name;
+  document.getElementById("phone").value = lead.phone;
+  document.getElementById("email").value = lead.email || "";
+  document.getElementById("interest").value = lead.interest;
+  document.getElementById("status").value = lead.status;
+  document.getElementById("submitBtn").textContent = "💾 Save Changes";
+
+  document.getElementById("add-client").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 }
 
 function deleteLead(id) {
-    if (confirm("Are you sure you want to delete this client?")) {
-        leads = leads.filter(function(lead) {
-            return lead.id !== id;
-        });
+  if (!confirm("Are you sure you want to delete this client?")) return;
+  leads = leads.filter(item => item.id !== id);
+  saveLeads();
+}
 
-        saveLeads();
-        renderLeads();
-    }
+function changeStatus(id, status) {
+  const lead = leads.find(item => item.id === id);
+  if (!lead) return;
+  lead.status = status;
+  saveLeads();
 }
 
 function renderLeads() {
-    const query = searchInput.value.toLowerCase().trim();
+  const query = document.getElementById("search").value.toLowerCase();
+  const filter = document.getElementById("filter").value;
 
-    const filteredLeads = leads.filter(function(lead) {
-        return [
-            lead.name,
-            lead.phone,
-            lead.email || "",
-            lead.interest
-        ].some(function(value) {
-            return String(value).toLowerCase().includes(query);
-        });
+  document.getElementById("total").textContent = leads.length;
+  document.getElementById("contacted").textContent =
+    leads.filter(item => item.status === "Contacted").length;
+  document.getElementById("converted").textContent =
+    leads.filter(item => item.status === "Converted").length;
+
+  const filtered = leads.filter(item => {
+    const text = [
+      item.name, item.phone, item.email, item.interest
+    ].join(" ").toLowerCase();
+
+    return text.includes(query) &&
+      (!filter || item.status === filter);
+  });
+
+  document.getElementById("count").textContent =
+    filtered.length + (filtered.length === 1 ? " client" : " clients");
+
+  const container = document.getElementById("leads");
+  container.replaceChildren();
+
+  if (!filtered.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = leads.length
+      ? "No matching clients found."
+      : "👋 No clients yet. Add your first client!";
+    container.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "lead";
+
+    const info = document.createElement("div");
+    info.className = "lead-info";
+
+    const title = document.createElement("h3");
+    title.textContent = item.name;
+
+    const phone = document.createElement("p");
+    phone.className = "detail";
+    phone.textContent = "☎ " + item.phone;
+
+    const email = document.createElement("p");
+    email.className = "detail";
+    email.textContent = "✉ " + (item.email || "No email provided");
+
+    const interest = document.createElement("p");
+    interest.className = "detail";
+    interest.textContent = "💼 " + item.interest;
+
+    const status = document.createElement("span");
+    status.className = "status " + item.status;
+    status.textContent = item.status;
+
+    info.append(title, phone, email, interest, status);
+
+    const actions = document.createElement("div");
+    actions.className = "lead-actions";
+
+    const edit = document.createElement("button");
+    edit.className = "edit";
+    edit.textContent = "✏️ Edit";
+    edit.addEventListener("click", () => editLead(item.id));
+
+    const remove = document.createElement("button");
+    remove.className = "delete";
+    remove.textContent = "🗑";
+    remove.setAttribute("aria-label", "Delete " + item.name);
+    remove.addEventListener("click", () => deleteLead(item.id));
+
+    const statusSelect = document.createElement("select");
+    statusSelect.setAttribute("aria-label", "Status for " + item.name);
+    ["New", "Contacted", "Converted"].forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      option.selected = item.status === value;
+      statusSelect.appendChild(option);
     });
+    statusSelect.addEventListener("change", event =>
+      changeStatus(item.id, event.target.value)
+    );
 
-    document.getElementById("total").textContent = leads.length;
-
-    document.getElementById("contacted").textContent =
-        leads.filter(function(lead) {
-            return lead.status === "Contacted";
-        }).length;
-
-    document.getElementById("converted").textContent =
-        leads.filter(function(lead) {
-            return lead.status === "Converted";
-        }).length;
-
-    const list = document.getElementById("leadList");
-    list.replaceChildren();
-
-    if (filteredLeads.length === 0) {
-        const message = document.createElement("div");
-        message.className = "empty-message";
-        message.textContent = query
-            ? "No matching clients found."
-            : "No clients added yet. Add your first client above.";
-        list.appendChild(message);
-        return;
-    }
-
-    filteredLeads.forEach(function(lead) {
-        const card = document.createElement("article");
-        card.className = "lead";
-
-        const title = document.createElement("h3");
-        title.textContent = lead.name;
-        card.appendChild(title);
-
-        const badge = document.createElement("span");
-        badge.className = "status-badge";
-
-        if (lead.status === "Contacted") {
-            badge.classList.add("status-contacted");
-        } else if (lead.status === "Converted") {
-            badge.classList.add("status-converted");
-        }
-
-        badge.textContent = lead.status;
-        card.appendChild(badge);
-
-        const details = [
-            "📞 Phone: " + lead.phone,
-            "✉️ Email: " + (lead.email || "Not provided"),
-            "💼 Interested in: " + lead.interest
-        ];
-
-        details.forEach(function(detail) {
-            const paragraph = document.createElement("p");
-            paragraph.textContent = detail;
-            card.appendChild(paragraph);
-        });
-
-        const statusLabel = document.createElement("label");
-        statusLabel.textContent = "Update status";
-        statusLabel.htmlFor = "status-" + lead.id;
-        card.appendChild(statusLabel);
-
-        const statusSelect = document.createElement("select");
-        statusSelect.id = "status-" + lead.id;
-
-        ["New", "Contacted", "Converted"].forEach(function(status) {
-            const option = document.createElement("option");
-            option.value = status;
-            option.textContent = status;
-            statusSelect.appendChild(option);
-        });
-
-        statusSelect.value = lead.status;
-
-        statusSelect.addEventListener("change", function() {
-            updateStatus(lead.id, statusSelect.value);
-        });
-
-        card.appendChild(statusSelect);
-
-        const actions = document.createElement("div");
-        actions.className = "lead-actions";
-
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "🗑 Delete";
-        deleteButton.className = "delete-button";
-        deleteButton.type = "button";
-
-        deleteButton.addEventListener("click", function() {
-            deleteLead(lead.id);
-        });
-
-        actions.appendChild(deleteButton);
-        card.appendChild(actions);
-        list.appendChild(card);
-    });
+    actions.append(edit, remove, statusSelect);
+    card.append(info, actions);
+    container.appendChild(card);
+  });
 }
 
-searchInput.addEventListener("input", renderLeads);
+document.getElementById("search").addEventListener("input", renderLeads);
+document.getElementById("filter").addEventListener("change", renderLeads);
 
 renderLeads();
 </script>
-
 </body>
 </html>
